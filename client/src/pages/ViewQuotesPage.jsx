@@ -21,7 +21,7 @@ const ViewQuotesPage = () => {
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/quotes');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/quotes`);
         setQuotes(response.data);
         setFilteredQuotes(response.data);
       } catch (err) {
@@ -58,9 +58,9 @@ const ViewQuotesPage = () => {
     <div>
       <QuoteFilter onFilter={handleFilter} onSort={handleSort} />
       <QuotesListContainer>
-        {filteredQuotes.map((quote) => (
-          <QuoteCard key={quote._id} quote={quote} />
-        ))}
+      {filteredQuotes.map((quote) => (
+        <QuoteCard key={quote._id} quote={quote} />
+      ))}
       </QuotesListContainer>
     </div>
   );
