@@ -12,6 +12,14 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/quotes_db'
 app.use(cors());
 app.use(bodyParser.json());
 
+//serve static frontend files
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
+
+
 // MongoDB Connection
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
