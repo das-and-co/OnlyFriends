@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require("path");
 const bodyParser = require('body-parser');
 const chalk = require('chalk');
-require('dotenv').config();
+require('dotenv').config({ path: './.env' });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
