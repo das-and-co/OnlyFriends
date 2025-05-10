@@ -7,7 +7,7 @@ module.exports = {
     name: "onlyfriends",             // Process name
     cwd: "./server",                // Working directory (where .env lives)
     script: "server.js",   // Entry point (relative to root)
-    instances: "1",               // Cluster mode (use all CPU cores)
+    instances: 1,               // Cluster mode (use all CPU cores)
     autorestart: true,              // Auto-restart if crashes
     watch: false,                   // Disable file watching in prod
     max_memory_restart: "1G",       // Restart if memory > 1GB
