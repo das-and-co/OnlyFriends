@@ -32,13 +32,6 @@ const logRequest = (req, res, data = null, error = null) => {
     }
 };
 
-// Serve static frontend files
-app.use(express.static(path.join(__dirname, "../client/build")));
-
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-});
-
 // MongoDB Connection
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log(chalk.green('MongoDB connected')))
@@ -85,6 +78,13 @@ app.post('/api/quotes', async (req, res) => {
         res.status(500).json({ message: 'Error adding quote', error: err });
         logRequest(req, res, null, err);
     }
+});
+
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
 // Start server
