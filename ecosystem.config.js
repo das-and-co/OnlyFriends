@@ -5,8 +5,8 @@ require('dotenv').config({ path: path.resolve(__dirname, 'server/.env') }); // L
 module.exports = {
   apps: [{
     name: "onlyfriends",             // Process name
-    script: "./server/server.js",   // Entry point (relative to root)
     cwd: "./server",                // Working directory (where .env lives)
+    script: "server.js",   // Entry point (relative to root)
     instances: "max",               // Cluster mode (use all CPU cores)
     autorestart: true,              // Auto-restart if crashes
     watch: false,                   // Disable file watching in prod
