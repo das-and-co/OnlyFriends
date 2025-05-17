@@ -2,10 +2,15 @@ name: Deploy on astra
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
+  pull_request:
+    branches: 
+      - main
 
 jobs:
-    deploy:
+    deploy-prod:
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         runs-on: self-hosted
         steps:
 
@@ -23,3 +28,41 @@ jobs:
             - name: Restart app with PM2
               run: |
                 pm2 restart onlyfriends
+
+    deploy-dev:
+        if: github.event_name == 'pull_request'
+        runs-on: self-hosted
+        steps:
+
+            - uses: actions/checkout@v3
+
+            - name: Install server dependencies
+              run: npm install
+
+            - name: Install client dependencies and build
+              working-directory: client
+              run: |
+                npm install --legacy-peer-deps
+                npm run build
+
+            - name: Run dev server and add route to rprox
+              run: |
+                # Extract branch name
+                BRANCH_NAME=$(echo "${{ github.head_ref }}" | tr '/' '-')
+
+                # Find free port starting from 5000
+                PORT=5000
+                while ss -ltn | grep -q ":$PORT "; do
+                  PORT=$((PORT + 1))
+                done
+
+                pm2 describe onlyfriends-$BRANCH_NAME > /dev/null 2>&1
+                if [ $? -eq 0 ]; then
+                  pm2 restart onlyfriends-$BRANCH_NAME
+                else
+                  pm2 start index.js --name onlyfriends-$BRANCH_NAME --env development -- PORT=$PORT
+
+            - name: Set Autokill after 1 hour
+              run: nohup bash -c "sleep 3600; pm2 delete onlyfriends-$BRANCH_NAME" &
+
+

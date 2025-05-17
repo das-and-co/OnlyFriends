@@ -5,7 +5,7 @@ import QuoteForm from '../components/QuoteForm';
 const AddQuotePage = ({ onAddQuote }) => {
   const handleAddQuote = async (newQuote) => {
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/quotes`, newQuote);
+      await axios.post(`/api/quotes`, newQuote);
       onAddQuote();
     } catch (err) {
       console.error('Error adding quote:', err);

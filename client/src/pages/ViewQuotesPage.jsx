@@ -21,7 +21,7 @@ const ViewQuotesPage = () => {
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/quotes`);
+        const response = await axios.get(`/api/quotes`);
         setQuotes(response.data);
         setFilteredQuotes(response.data);
       } catch (err) {
