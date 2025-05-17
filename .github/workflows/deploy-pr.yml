@@ -40,8 +40,6 @@ jobs:
                 export BRANCH_NAME=$BRANCH_NAME
                 export MONGO_URI="${{ secrets.MONGO_URI }}"
 
-                echo $MONGO_URI
-
                 echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
                 echo "PORT=$PORT" >> $GITHUB_ENV
 
