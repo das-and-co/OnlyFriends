@@ -56,18 +56,13 @@ jobs:
                 export BRANCH_NAME=$BRANCH_NAME
                 export MONGO_URI="${{ secrets.MONGO_URI }}"
 
-                echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-                echo "PORT=$PORT" >> $GITHUB_ENV
-
                 if  pm2 list | grep -q onlyfriends-$BRANCH_NAME; then
                   pm2 restart onlyfriends-$BRANCH_NAME
+                  rproxctl -cmd extend -path ${BRANCH_NAME}-onlyfriends -ttl 3600
                 else
                   pm2 start ecosystem.config.js --env development --update-env || { echo "PM2 start failed"; pm2 logs; exit 1; }
+                  rproxctl -cmd set -path ${BRANCH_NAME}-onlyfriends -target http://host.docker.internal:$PORT -ttl 3600
                 fi
-
-            - name: Add route to rprox
-              run: |
-                rproxctl -cmd set -path ${BRANCH_NAME}-onlyfriends -target http://host.docker.internal:$PORT -ttl 3600
 
             - name: Set Autokill after 1 hour
               run: nohup bash -c "sleep 3600; pm2 delete onlyfriends-$BRANCH_NAME" &
