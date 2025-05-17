@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-    deploy-dev:
+    deploy-pr:
         runs-on: self-hosted
         steps:
 
