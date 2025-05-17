@@ -1,0 +1,26 @@
+name: PROD deployment on astra
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+    deploy-prod:
+        runs-on: self-hosted
+        steps:
+
+            - uses: actions/checkout@v3
+
+            - name: Install server dependencies
+              run: npm install
+
+            - name: Install client dependencies and build
+              working-directory: client
+              run: |
+                npm install --legacy-peer-deps
+                npm run build
+
+            - name: Restart app with PM2
+              run: |
+                pm2 restart onlyfriends
