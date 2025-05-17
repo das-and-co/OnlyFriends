@@ -1,4 +1,4 @@
-name: DEV deployment on astra
+name: PR deployment on astra
 
 on:
   pull_request:
@@ -36,8 +36,8 @@ jobs:
                 if [ $? -eq 0 ]; then
                   pm2 restart onlyfriends-$BRANCH_NAME
                 else
-                  export PORT=$PORT
                   PORT=$PORT BRANCH_NAME=$BRANCH_NAME pm2 start ecosystem.config.js --env development --update-env
+                fi
                 
                 # Add route to rprox
                 rproxctl -cmd set -path ${BRANCH_NAME}-onlyfriends -target http://host.docker.internal:$PORT -ttl 3600
