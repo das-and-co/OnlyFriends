@@ -49,6 +49,8 @@ jobs:
 
                 echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
                 echo "PORT=$PORT" >> $GITHUB_ENV
+                which pm2
+                pm2 list
 
                 pm2 describe onlyfriends-$BRANCH_NAME > /dev/null 2>&1
                 if [ $? -eq 0 ]; then
