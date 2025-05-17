@@ -25,13 +25,8 @@ jobs:
               run: |
                 echo "$HOME/go/bin" >> $GITHUB_PATH
 
-            - name: Verify rproxctl installation
-              run: |
-                which rproxctl
-
             - name: Run dev server and add route to rprox
               run: |
-                set -x
                 # Extract branch name
                 BRANCH_NAME=$(echo "${{ github.head_ref }}" | tr '/' '-')
 
@@ -41,16 +36,11 @@ jobs:
                   PORT=$((PORT + 1))
                 done
 
-                echo "BRANCH_NAME=$BRANCH_NAME"
-                echo "PORT=$PORT"
-
                 export PORT=$PORT
                 export BRANCH_NAME=$BRANCH_NAME
 
                 echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
                 echo "PORT=$PORT" >> $GITHUB_ENV
-                which pm2
-                pm2 list
 
                 if  pm2 list | grep -q onlyfriends-$BRANCH_NAME; then
                   pm2 restart onlyfriends-$BRANCH_NAME
