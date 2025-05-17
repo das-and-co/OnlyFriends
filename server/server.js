@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require("path");
 const bodyParser = require('body-parser');
-const chalk = require('chalk');
+let chalk;
+(async () => {
+  chalk = await import('chalk');
+})();
 require('dotenv').config();
 
 const app = express();
