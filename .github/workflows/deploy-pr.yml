@@ -52,8 +52,7 @@ jobs:
                 which pm2
                 pm2 list
 
-                pm2 describe onlyfriends-$BRANCH_NAME > /dev/null 2>&1
-                if [ $? -eq 0 ]; then
+                if  pm2 list | grep -q onlyfriends-$BRANCH_NAME; then
                   pm2 restart onlyfriends-$BRANCH_NAME
                 else
                   pm2 start ecosystem.config.js --env development --update-env || { echo "PM2 start failed"; pm2 logs; exit 1; }
