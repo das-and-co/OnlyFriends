@@ -42,8 +42,12 @@ jobs:
 
                 echo "BRANCH_NAME=$BRANCH_NAME"
                 echo "PORT=$PORT"
+
                 export PORT=$PORT
                 export BRANCH_NAME=$BRANCH_NAME
+                
+                echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+                echo "PORT=$PORT" >> $GITHUB_ENV
 
                 pm2 describe onlyfriends-$BRANCH_NAME > /dev/null 2>&1
                 if [ $? -eq 0 ]; then
@@ -51,8 +55,9 @@ jobs:
                 else
                   pm2 start ecosystem.config.js --env development --update-env || { echo "PM2 start failed"; pm2 logs; exit 1; }
                 fi
-                
-                # Add route to rprox
+
+            - name: Add route to rprox
+              run: |
                 rproxctl -cmd set -path ${BRANCH_NAME}-onlyfriends -target http://host.docker.internal:$PORT -ttl 3600
 
             - name: Set Autokill after 1 hour
