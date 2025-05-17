@@ -3,7 +3,7 @@ require('dotenv').config({ path: path.resolve(__dirname, 'server/.env') });
 
 module.exports = {
   apps: [{
-    name: "onlyfriends",
+    name: "onlyfriends-" + process.env.BRANCH_NAME,
     cwd: "./server",
     script: "server.js",
     instances: 1,
@@ -16,7 +16,7 @@ module.exports = {
     },
     env_development: {
       NODE_ENV: "development",
-      PORT: 5001
+      PORT: process.env.PORT
     }
   }]
 };
