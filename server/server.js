@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require("path");
 const bodyParser = require('body-parser');
-const chalk = require('chalk');
 require('dotenv').config();
 
 const app = express();
@@ -14,28 +13,24 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/quotes_db'
 app.use(cors());
 app.use(bodyParser.json());
 
-// Logging function with colors
 const logRequest = (req, res, data = null, error = null) => {
-    console.log(chalk.cyan(`[${new Date().toISOString()}]`) + 
-                chalk.yellow(` ${req.method}`) + 
-                chalk.green(` ${req.originalUrl}`) +
-                chalk.magenta(` - IP: ${req.ip}`));
-    
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+
     if (req.body && Object.keys(req.body).length) {
-        console.log(chalk.blue("Request Body:"), JSON.stringify(req.body, null, 2));
+        console.log("Request Body:", JSON.stringify(req.body, null, 2));
     }
     if (data) {
-        console.log(chalk.green("Response Data:"), JSON.stringify(data, null, 2));
+        console.log("Response Data:", JSON.stringify(data, null, 2));
     }
     if (error) {
-        console.error(chalk.red("Error:"), error);
+        console.error("Error:", error);
     }
 };
 
 // MongoDB Connection
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log(chalk.green('MongoDB connected')))
-    .catch(err => console.error(chalk.red('MongoDB connection error:'), err));
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Quote Schema
 const quoteSchema = new mongoose.Schema({
@@ -88,4 +83,4 @@ app.get("*", (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => console.log(chalk.green(`Server running on http://localhost:${PORT}`)));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
