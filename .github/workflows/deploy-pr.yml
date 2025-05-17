@@ -62,10 +62,8 @@ jobs:
                 else
                   pm2 start ecosystem.config.js --env development --update-env || { echo "PM2 start failed"; pm2 logs; exit 1; }
                   rproxctl -cmd set -path ${BRANCH_NAME}-onlyfriends -target http://host.docker.internal:$PORT -ttl 3600
+                  nohup bash -c "sleep 3600; pm2 delete onlyfriends-$BRANCH_NAME" &
                 fi
-
-            - name: Set Autokill after 1 hour
-              run: nohup bash -c "sleep 3600; pm2 delete onlyfriends-$BRANCH_NAME" &
 
             - name: Set Deployment Status to Success
               uses: actions/github-script@v7
