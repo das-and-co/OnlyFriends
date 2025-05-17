@@ -36,6 +36,7 @@ jobs:
                   PORT=$((PORT + 1))
                 done
                 MONGO_URI: ${{ secrets.MONGO_URI }}
+                echo MONGO_URI: ${{ secrets.MONGO_URI }}
 
                 export PORT=$PORT
                 export BRANCH_NAME=$BRANCH_NAME
