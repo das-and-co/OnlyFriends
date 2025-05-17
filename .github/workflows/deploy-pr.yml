@@ -25,6 +25,10 @@ jobs:
               run: |
                 echo "$HOME/go/bin" >> $GITHUB_PATH
 
+            - name: Verify rproxctl installation
+              run: |
+                which rproxctl
+
             - name: Run dev server and add route to rprox
               run: |
                 # Extract branch name
@@ -49,7 +53,6 @@ jobs:
                 fi
                 
                 # Add route to rprox
-                echo "$HOME/go/bin" >> $GITHUB_PATH
                 rproxctl -cmd set -path ${BRANCH_NAME}-onlyfriends -target http://host.docker.internal:$PORT -ttl 3600
 
             - name: Set Autokill after 1 hour
