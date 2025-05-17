@@ -35,11 +35,12 @@ jobs:
                 while ss -ltn | grep -q ":$PORT "; do
                   PORT=$((PORT + 1))
                 done
-                MONGO_URI=${{ secrets.MONGO_URI }}
 
                 export PORT=$PORT
                 export BRANCH_NAME=$BRANCH_NAME
-                export MONGO_URI=$MONGO_URI
+                export MONGO_URI="${{ secrets.MONGO_URI }}"
+
+                echo $MONGO_URI
 
                 echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
                 echo "PORT=$PORT" >> $GITHUB_ENV
