@@ -21,6 +21,9 @@ jobs:
                 npm install --legacy-peer-deps
                 npm run build
 
+            - name: test rproxctl
+              run: rproxctl -cmd set -path test-pr-onlyfriends -target http://host.docker.internal:5001 -ttl 3600
+
             - name: Run dev server and add route to rprox
               run: |
                 # Extract branch name
