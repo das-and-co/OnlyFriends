@@ -32,11 +32,15 @@ jobs:
                   PORT=$((PORT + 1))
                 done
 
+                echo "BRANCH_NAME=$BRANCH_NAME"
+                echo "PORT=$PORT"
+
+
                 pm2 describe onlyfriends-$BRANCH_NAME > /dev/null 2>&1
                 if [ $? -eq 0 ]; then
                   pm2 restart onlyfriends-$BRANCH_NAME
                 else
-                  PORT=$PORT BRANCH_NAME=$BRANCH_NAME pm2 start ecosystem.config.js --env development --update-env
+                  PORT=$PORT BRANCH_NAME=$BRANCH_NAME pm2 start ecosystem.config.js --env development --update-env || { echo "PM2 start failed"; pm2 logs; exit 1; }
                 fi
                 
                 # Add route to rprox
