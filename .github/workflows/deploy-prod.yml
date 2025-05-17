@@ -23,4 +23,4 @@ jobs:
 
             - name: Restart app with PM2
               run: |
-                pm2 restart onlyfriends-main || { echo "PM2 restart failed"; pm2 logs; exit 1; }
+                pm2 restart onlyfriends-main
